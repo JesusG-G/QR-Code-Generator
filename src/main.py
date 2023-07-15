@@ -17,8 +17,8 @@ class GridLayaout(GridLayout):
 
         self.add_widget(Label(text="Introduce the name of the file"))
         #Add input box
-        self.name = TextInput(multiline=False)
-        self.add_widget(self.name)
+        self.file_name = TextInput(multiline=False)
+        self.add_widget(self.file_name)
 
         #Add widgets
         self.add_widget(Label(text="Introduce the URL or the text"))
@@ -38,14 +38,16 @@ class GridLayaout(GridLayout):
         self.add_widget(self.submit)
 
     def on_press(self, instance):
-        name = self.name.text
+        file_name = self.file_name.text
         data_qr = self.data_qr.text
         logo = self.logo.text
-        self.qrcode.generate_qr(file_name=name,data_qr=data_qr,fill_color='black', background_color='white')
-        #self.add_widget(Label(text=f"name: {name} pizza: {pizza}"))
-
+        generated_qr = self.qrcode.generate_qr(file_name,data_qr,fill_color='black', background_color='white')
+        if generated_qr:
+            self.add_widget(Label(text=f'Successfully created {file_name}'))
+        else:
+            self.add_widget(Label(text='An error ocurred'))
         #clear input
-        self.name.text = ""
+        self.file_name.text = ""
         self.data_qr.text = ""
         self.logo.text = ""
 
