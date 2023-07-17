@@ -6,46 +6,67 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from qr_code import QrCodeGenerator
 
-class GridLayaout(GridLayout):
+
+class MainGridLayout(GridLayout):
     #Initialize infinite keywords:
     def __init__(self, **kwargs):
-        self.qrcode = QrCodeGenerator(size=30, padding=2)
+        self.qrcode = QrCodeGenerator()
         #Call grid layout contructor
-        super(GridLayaout, self).__init__(**kwargs)
+        super(MainGridLayout, self).__init__(**kwargs)
         #Set Columns
-        self.cols = 2
+        self.cols = 1
 
-        self.add_widget(Label(text="Introduce the name of the file"))
+        #Created other gridLayout
+        self.top_grid = GridLayout()
+        self.top_grid.cols = 2
+
+        self.top_grid.add_widget(Label(text="Introduce the name of the file.*"))
         #Add input box
         self.file_name = TextInput(multiline=False)
-        self.add_widget(self.file_name)
+        self.top_grid.add_widget(self.file_name)
 
         #Add widgets
-        self.add_widget(Label(text="Introduce the URL or the text"))
+        self.top_grid.add_widget(Label(text="Introduce the URL or the text.*"))
         #Add input box
         self.data_qr = TextInput(multiline=False)
-        self.add_widget(self.data_qr)
+        self.top_grid.add_widget(self.data_qr)
 
-        self.add_widget(Label(text="Upload your logo for the Qr Code (Optional)"))
+        self.top_grid.add_widget(Label(text="Upload your logo for the Qr Code (Optional)"))
         #Add input box
         self.logo = TextInput(multiline=False)
-        self.add_widget(self.logo)
+        self.top_grid.add_widget(self.logo)
+
+        #Add top_gird to the app
+        self.add_widget(self.top_grid)
 
         #Add Button
-        self.submit = Button(text="Submit", font_size=32)
+        self.submit = Button(
+            text="Generate QR CODE", 
+            font_size=32,
+            size_hint= (0.5,None),
+            width = 300,
+            height = 200,
+            pos_hint = {'y':.5}
+        )
         #Bind the button
         self.submit.bind(on_press = self.on_press)
         self.add_widget(self.submit)
 
     def on_press(self, instance):
         file_name = self.file_name.text
+        file_name += '.png'
         data_qr = self.data_qr.text
         logo = self.logo.text
-        generated_qr = self.qrcode.generate_qr(file_name,data_qr,fill_color='black', background_color='white')
-        if generated_qr:
-            self.add_widget(Label(text=f'Successfully created {file_name}'))
-        else:
-            self.add_widget(Label(text='An error ocurred'))
+        if file_name == '':
+            self.add_widget(Label(text='Please introduce the file name.'))
+        elif data_qr == '':
+            self.add_widget(Label(text='Please introduce the text or url for the QR Code.'))
+        else:    
+            generated_qr = self.qrcode.generate_qr(file_name,data_qr,logo,fill_color='black', background_color='white')
+            if generated_qr:
+                self.add_widget(Label(text=f'Successfully created {file_name}'))
+            else:
+                self.add_widget(Label(text='An error ocurred'))
         #clear input
         self.file_name.text = ""
         self.data_qr.text = ""
@@ -53,7 +74,7 @@ class GridLayaout(GridLayout):
 
 class QrGeneratorApp(App):
     def build(self):
-        return GridLayaout()
+        return MainGridLayout()
 
 if __name__ == "__main__":
     app = QrGeneratorApp()
