@@ -1,58 +1,20 @@
 import kivy
 from kivy.app import App
 from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
+from kivy.uix.widget import Widget
+from kivy.properties import ObjectProperty
+from kivy.lang import Builder
 from qr_code import QrCodeGenerator
 
-
-class MainGridLayout(GridLayout):
-    #Initialize infinite keywords:
-    def __init__(self, **kwargs):
-        self.qrcode = QrCodeGenerator()
-        #Call grid layout contructor
-        super(MainGridLayout, self).__init__(**kwargs)
-        #Set Columns
-        self.cols = 1
-
-        #Created other gridLayout
-        self.top_grid = GridLayout()
-        self.top_grid.cols = 2
-
-        self.top_grid.add_widget(Label(text="Introduce the name of the file.*"))
-        #Add input box
-        self.file_name = TextInput(multiline=False)
-        self.top_grid.add_widget(self.file_name)
-
-        #Add widgets
-        self.top_grid.add_widget(Label(text="Introduce the URL or the text.*"))
-        #Add input box
-        self.data_qr = TextInput(multiline=False)
-        self.top_grid.add_widget(self.data_qr)
-
-        self.top_grid.add_widget(Label(text="Upload your logo for the Qr Code (Optional)"))
-        #Add input box
-        self.logo = TextInput(multiline=False)
-        self.top_grid.add_widget(self.logo)
-
-        #Add top_gird to the app
-        self.add_widget(self.top_grid)
-
-        #Add Button
-        self.submit = Button(
-            text="Generate QR CODE", 
-            font_size=32,
-            size_hint= (0.5,None),
-            width = 300,
-            height = 200,
-            pos_hint = {'y':.5}
-        )
-        #Bind the button
-        self.submit.bind(on_press = self.on_press)
-        self.add_widget(self.submit)
-
-    def on_press(self, instance):
+#Load de kv file with the design of the app
+Builder.load_file('main.kv')
+class MainLayout(Widget):
+    qrcode = QrCodeGenerator()
+    file_name = ObjectProperty(None)
+    data_qr = ObjectProperty(None)
+    logo = ObjectProperty(None)
+        
+    def on_press(self):
         file_name = self.file_name.text
         file_name += '.png'
         data_qr = self.data_qr.text
@@ -71,10 +33,12 @@ class MainGridLayout(GridLayout):
         self.file_name.text = ""
         self.data_qr.text = ""
         self.logo.text = ""
-
+    def choose_file_logo() -> str :
+        path_file: str = ''
+        return path_file
 class QrGeneratorApp(App):
     def build(self):
-        return MainGridLayout()
+        return MainLayout()
 
 if __name__ == "__main__":
     app = QrGeneratorApp()
