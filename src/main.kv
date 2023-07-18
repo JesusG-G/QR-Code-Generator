@@ -1,0 +1,48 @@
+#:import utils kivy.utils
+<TextInput>
+    background_color: utils.get_color_from_hex('B7F3E3')
+    size_hint: (1, 0.5)
+<Label>
+    font_size: 15
+    size_hint: (1, 0.5)
+<MainLayout>
+    file_name: file_name
+    data_qr: data_qr
+    logo: logo
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        spacing: 10
+        padding: 20
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: 5
+            padding: 20
+            BoxLayout:
+                orientation:"horizontal"
+                Label:
+                    text: "Introduce the name of the file.*"
+                TextInput:
+                    id: file_name
+                    multiline: False
+            
+            BoxLayout:
+                orientation:"horizontal"
+                Label:
+                    text: "Introduce the URL or the text.*"
+                TextInput:
+                    id: data_qr
+                    multiline: False
+            BoxLayout:
+                orientation:"horizontal"
+                Label:
+                    text: "Upload your logo for the Qr Code (Optional)"
+                TextInput:
+                    id: logo
+                    multiline: False   
+        Button:
+            text: "Generate QR CODE"
+            on_press: root.on_press()
+            pos_hint: {'center_x': .5}
+            size_hint: (0.5, 0.5)
