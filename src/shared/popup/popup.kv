@@ -1,0 +1,63 @@
+<SuccessPopup@Popup>
+    auto_dismiss: False
+    size_hint: 0.6, 0.4
+    pos_hint: {"x":0.2, "top":0.9}
+    title: "Success"
+    BoxLayout:
+        orientation:"vertical"
+        spacing: 10
+        Label:
+            text:"QR CODE Successfully created."
+            font_size: 20
+        Button:
+            text:"Close"
+            font_size: 24
+            on_release: root.dismiss()
+
+<FailPopup@Popup>
+    auto_dismiss: False
+    size_hint: 0.6, 0.4
+    pos_hint: {"x":0.2, "top":0.9}
+    title: "Success"
+    BoxLayout:
+        orientation:"vertical"
+        spacing: 10
+        Label:
+            text:"An error ocurred."
+            font_size: 20
+        Button:
+            text:"Close"
+            font_size: 24
+            on_release: root.dismiss()
+
+<MessageErrorPopup@Popup>
+    auto_dismiss: False
+    size_hint: 0.6, 0.4
+    pos_hint: {"x":0.2, "top":0.9}
+    title: "Success"
+    BoxLayout:
+        orientation:"vertical"
+        spacing: 10
+        Label:
+            text:"Please introduce the text or url for the QR Code."
+            font_size: 20
+        Button:
+            text:"Close"
+            font_size: 24
+            on_release: root.dismiss()
+
+<FileErrorPopup@Popup>
+    auto_dismiss: False
+    size_hint: 0.6, 0.4
+    pos_hint: {"x":0.2, "top":0.9}
+    title: "Success"
+    BoxLayout:
+        orientation:"vertical"
+        spacing: 10
+        Label:
+            text:"Please choose a image png or jpg."
+            font_size: 20
+        Button:
+            text:"Close"
+            font_size: 24
+            on_release: root.dismiss()
